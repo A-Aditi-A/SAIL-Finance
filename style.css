@@ -2132,3 +2132,112 @@ select:focus, input[type="number"]:focus {
 .alert-item .time-badge {
     border-color: var(--accent-rose);
 }
+
+/* ============================================================
+   MOBILE RESPONSIVENESS
+   ============================================================ */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    /* Convert Sidebar to Bottom Nav */
+    .sidebar {
+        width: 100% !important;
+        height: 75px;
+        bottom: 0;
+        top: auto;
+        flex-direction: row;
+        padding: 0 10px;
+        z-index: 1000;
+        border-right: none;
+        border-top: 1px solid var(--card-border);
+        background: rgba(11, 15, 25, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .sidebar-header, .user-info-wrap, .sidebar-toggle-btn {
+        display: none !important;
+    }
+    
+    .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+    }
+    
+    .nav-item {
+        flex-direction: column;
+        padding: 8px 4px !important;
+        gap: 4px !important;
+        margin: 0;
+        font-size: 0.65rem;
+        background: transparent !important;
+        border: none !important;
+        width: 20%;
+        justify-content: center;
+    }
+    
+    .nav-item i {
+        margin: 0 !important;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .nav-item span {
+        display: block !important;
+        opacity: 1 !important;
+        width: auto !important;
+        text-align: center;
+    }
+    
+    .nav-item.active {
+        color: var(--accent-cyan);
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1rem !important;
+        padding-bottom: 90px !important; /* Space for bottom nav */
+    }
+    
+    .sidebar-expand-btn {
+        display: none !important;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .grid-2x2, .dailylog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .modal-box {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .modal-input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .modal-cat-label {
+        width: 100%;
+    }
+}
