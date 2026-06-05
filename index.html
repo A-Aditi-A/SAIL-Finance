@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditi's Lifestyle & Scooty Fund Dashboard</title>
+    <!-- Google Fonts: Outfit for sleek, modern headings and body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for premium micro-icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon logo-scooty">
+                    🛵
+                </div>
+                <div class="logo-text">
+                    <h1>SAIL Finance</h1>
+                    <span>Savings by Adi IN Ludhiana</span>
+                </div>
+                <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" title="Collapse sidebar">
+                    <i data-lucide="chevrons-left"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="tracker" data-label="Scooty Fund Tracker">
+                    <i data-lucide="wallet"></i>
+                    <span>Scooty Fund Tracker</span>
+                </button>
+                <button class="nav-item" data-tab="dailylog" data-label="Daily Log &amp; Calendar">
+                    <i data-lucide="calendar-days"></i>
+                    <span>Daily Log & Calendar</span>
+                </button>
+                <button class="nav-item" data-tab="cooking" data-label="Kettle Cooking Hacks">
+                    <i data-lucide="soup"></i>
+                    <span>Kettle Cooking Hacks</span>
+                </button>
+                <button class="nav-item" data-tab="nutrition" data-label="Adjustable Meal Clock">
+                    <i data-lucide="alarm-clock"></i>
+                    <span>Adjustable Meal Clock</span>
+                </button>
+                <button class="nav-item" data-tab="ludhiana" data-label="Ludhiana Survival Guide">
+                    <i data-lucide="map-pin"></i>
+                    <span>Ludhiana Survival Guide</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <span class="user-name">Aditi Anasuya</span>
+                        <span class="user-role">Data Analyst @ Hero Steels</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Floating expand button (shown when sidebar is collapsed) -->
+        <button class="sidebar-expand-btn" id="sidebar-expand-btn" title="Expand sidebar">
+            <i data-lucide="chevrons-right"></i>
+        </button>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h2 id="tab-title">Scooty Fund Tracker</h2>
+                    <p id="tab-subtitle">Track your ₹8,000 monthly savings target & Ludhiana expenses</p>
+                </div>
+                <div class="header-right">
+                    <div class="salary-badge">
+                        <span class="label">Monthly Salary:</span>
+                        <span class="value">₹20,320</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab Content 1: Tracker -->
+            <section id="tracker" class="tab-content active">
+                <div class="grid-2x2">
+                    <!-- Progress Card -->
+                    <div class="dashboard-card progress-card">
+                        <h3>Savings Progress</h3>
+                        <div class="progress-container">
+                            <div class="progress-radial">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" class="bg"></circle>
+                                    <circle cx="50" cy="50" r="40" class="fg" id="savings-progress-ring"></circle>
+                                </svg>
+                                <div class="progress-text">
+                                    <span class="percentage" id="progress-percentage">0%</span>
+                                    <span class="label">Saved of Target</span>
+                                </div>
+                            </div>
+                            <div class="progress-stats">
+                                <div class="stat">
+                                    <span class="label">Current Savings</span>
+                                    <span class="value" id="current-saved-val">₹0</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="label">Goal (12 Months)</span>
+                                    <span class="value">₹96,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scooty Price Predictor -->
+                    <div class="dashboard-card calculator-card">
+                        <h3>Savings Goal Estimator</h3>
+                        <div class="input-group">
+                            <label for="target-amount">Expected Target Amount (₹)</label>
+                            <input type="number" id="target-amount" min="10000" max="500000" value="100000" step="1000">
+                            <small class="help-text">Enter your scooty price or any savings goal (e.g. ₹1,00,000).</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="interest-rate">Expected Annual Interest / Return (%)</label>
+                            <input type="number" id="interest-rate" min="0" max="15" value="6.5" step="0.1">
+                            <small class="help-text">Standard 12-Month RD interest is ~6.5% - 7.2% in Ludhiana banks.</small>
+                        </div>
+                        <div class="calculator-results">
+                            <div class="result-row">
+                                <span>Your Target Amount:</span>
+                                <strong id="est-scooty-cost">₹1,00,000</strong>
+                            </div>
+                            <div class="result-row">
+                                <span>Projected Fund with Interest:</span>
+                                <strong class="text-success" id="projected-fund">₹99,485</strong>
+                            </div>
+                            <div class="result-row feedback-row" id="calculator-feedback">
+                                <span class="badge badge-success">Goal Achieved!</span>
+                                <p>You have a surplus of <strong id="surplus-val">₹14,485</strong>. This will easily cover your first helmet, registration, and initial fuel tank!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expense Tracker Table -->
+                    <div class="dashboard-card table-card span-2">
+                        <div class="card-header-actions">
+                            <h3>Monthly Budget Planner (₹12,320 Operating Budget)</h3>
+                            <button class="btn btn-secondary btn-sm" id="reset-budget-btn">
+                                <i data-lucide="rotate-ccw"></i> Reset to Defaults
+                            </button>
+                        </div>
+                        <p class="description">
+                            After your <strong>₹8,000</strong> savings target, you have <strong>₹12,320</strong> left. 
+                            <strong>₹6,000</strong> goes to PG Rent (with Wifi/Electricity). 
+                            You have <strong>₹6,320</strong> remaining for Food, Travel, and Miscellaneous items.
+                        </p>
+                        <div class="table-responsive">
+                            <table class="budget-table">
+                                <thead>
+                                    <tr>
+                                        <th>Expense Category</th>
+                                        <th>Standard Allocation</th>
+                                        <th>Your Actual Spend</th>
+                                        <th>Status / Difference</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="cat-cell">
+                                                <i class="icon-home" data-lucide="home"></i>
+                                                <div>
+                                                    <strong>PG Rent & Utilities</strong>
+                                                    <small>Variable (including WiFi & Electricity)</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>₹6,000</td>
+                                        <td><input type="number" class="budget-input" id="spend-pg" value="6000"></td>
+                                        <td id="status-pg"><span>-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="cat-cell">
+                                                <i class="icon-food" data-lucide="shopping-bag"></i>
+                                                <div>
+                                                    <strong>Food & Groceries</strong>
+                                                    <small>Verka milk, eggs, grains, local veggies</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>₹2,500</td>
+                                        <td><input type="number" class="budget-input" id="spend-food" value="2500"></td>
+                                        <td id="status-food"><span>-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="cat-cell">
+                                                <i class="icon-travel" data-lucide="bus"></i>
+                                                <div>
+                                                    <strong>Travel & Commute</strong>
+                                                    <small>Shared autos / local transport to office</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>₹1,500</td>
+                                        <td><input type="number" class="budget-input" id="spend-travel" value="1500"></td>
+                                        <td id="status-travel"><span>-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="cat-cell">
+                                                <i class="icon-misc" data-lucide="smile"></i>
+                                                <div>
+                                                    <strong>Misc / Treat Budget</strong>
+                                                    <small>Eating out, emergency medicine, snacks</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>₹2,000</td>
+                                        <td><input type="number" class="budget-input" id="spend-misc" value="2000"></td>
+                                        <td id="status-misc"><span>-</span></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="footer-summary-row">
+                                        <td colspan="2">Total Operating Spend:</td>
+                                        <td id="total-actual-spend">₹12,000</td>
+                                        <td id="budget-overall-status">
+                                            <span class="badge badge-success">On Budget</span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Content 2: Cooking Hacks -->
+            <section id="cooking" class="tab-content">
+
+                <!-- Golden Rule Banner -->
+                <div class="soaking-banner">
+                    <i data-lucide="lightbulb"></i>
+                    <div><strong>The Golden Rule:</strong> Always soak grains &amp; legumes in room-temp water first to soften them before adding boiling water. Soaking halves cook time and protects your kettle's heating element.</div>
+                </div>
+
+                <!-- Recipe Cards -->
+                <div class="soaking-banner">
+                    <i data-lucide="flame"></i>
+                    <p><strong>Spice Blooming Tip:</strong> Mix dry spices into your grains <em>before</em> adding boiling water so the heat "blooms" the flavour. Stock: Haldi, Red Chilli, Dhaniya, Jeera, Salt, Black Salt, Chaat Masala, Maggi Masala, Garam Masala, Kitchen King, Hing.</p>
+                </div>
+
+                <div class="recipe-cards-grid">
+
+                    <div class="recipe-card-v2">
+                        <div class="rcv2-header"><span class="rcv2-num">01</span><div><h4>Masala Oats</h4><span class="rcv2-tag">Breakfast</span></div></div>
+                        <div class="rcv2-phases">
+                            <div class="phase-box phase-soak"><div class="phase-lbl"><i data-lucide="utensils-crossed"></i>1: THE MIX</div><p>1/2 cup plain oats + 1/4 tsp Haldi + 1/2 tsp Kitchen King (or Maggi Masala) + Pinch of Red Chilli + Salt.</p></div>
+                            <div class="phase-box phase-steam"><div class="phase-lbl"><i data-lucide="wind"></i>2: THE KETTLE SOAK</div><p>Pour boiling water. Cover for 7 mins.</p></div>
+                            <div class="phase-box phase-finish"><div class="phase-lbl"><i data-lucide="star"></i>3: THE FRESH FINISH</div><p>Add 1 chopped boiled egg + Squeeze of lemon.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-card-v2">
+                        <div class="rcv2-header"><span class="rcv2-num">02</span><div><h4>Savory Poha</h4><span class="rcv2-tag">Breakfast</span></div></div>
+                        <div class="rcv2-phases">
+                            <div class="phase-box phase-soak"><div class="phase-lbl"><i data-lucide="utensils-crossed"></i>1: THE MIX</div><p>Rinsed/Rested Poha + Pinch of Salt + Haldi + Hing + a dash of Dhaniya powder.</p></div>
+                            <div class="phase-box phase-steam"><div class="phase-lbl"><i data-lucide="wind"></i>2: THE KETTLE SOAK</div><p>Pour 2 tbsp boiling water. Cover for 3 mins.</p></div>
+                            <div class="phase-box phase-finish"><div class="phase-lbl"><i data-lucide="star"></i>3: THE FRESH FINISH</div><p>Add Peanuts + Raw Onions + Lemon.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-card-v2">
+                        <div class="rcv2-header"><span class="rcv2-num">03</span><div><h4>Sprouts Chaat</h4><span class="rcv2-tag">Dinner / Power Meal</span></div></div>
+                        <div class="rcv2-phases">
+                            <div class="phase-box phase-soak"><div class="phase-lbl"><i data-lucide="utensils-crossed"></i>1: THE MIX</div><p>Overnight soaked sprouts (drained) + 1/2 tsp Chaat Masala + Pinch of Garam Masala.</p></div>
+                            <div class="phase-box phase-steam"><div class="phase-lbl"><i data-lucide="wind"></i>2: THE KETTLE SOAK</div><p>Pour boiling water. Cover for 8 mins.</p></div>
+                            <div class="phase-box phase-finish"><div class="phase-lbl"><i data-lucide="star"></i>3: THE FRESH FINISH</div><p>Add Black Salt + Onions + Lemon.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-card-v2">
+                        <div class="rcv2-header"><span class="rcv2-num">04</span><div><h4>Upma (Suji)</h4><span class="rcv2-tag">Breakfast / Lunch</span></div></div>
+                        <div class="rcv2-phases">
+                            <div class="phase-box phase-soak"><div class="phase-lbl"><i data-lucide="utensils-crossed"></i>1: THE MIX</div><p>1/2 cup Suji + Salt + Jeera Powder + Hing + Peanuts.</p></div>
+                            <div class="phase-box phase-steam"><div class="phase-lbl"><i data-lucide="wind"></i>2: THE KETTLE SOAK</div><p>Pour boiling water (1:2 ratio). Cover for 8 mins.</p></div>
+                            <div class="phase-box phase-finish"><div class="phase-lbl"><i data-lucide="star"></i>3: THE FRESH FINISH</div><p>Fluff with fork. Add Lemon &amp; Black Pepper.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-card-v2">
+                        <div class="rcv2-header"><span class="rcv2-num">05</span><div><h4>Munch (Makhana)</h4><span class="rcv2-tag">Snack — No Kettle!</span></div></div>
+                        <div class="rcv2-phases">
+                            <div class="phase-box phase-nosoak"><div class="phase-lbl"><i data-lucide="utensils-crossed"></i>1: THE MIX</div><p>Dry Makhana in a bowl.</p></div>
+                            <div class="phase-box phase-steam"><div class="phase-lbl"><i data-lucide="wind"></i>2: NO WATER NEEDED</div><p>Just sprinkle Chaat Masala + Black Salt directly.</p></div>
+                            <div class="phase-box phase-finish"><div class="phase-lbl"><i data-lucide="star"></i>3: THE FRESH FINISH</div><p>Shake the bowl to coat evenly. Eat while coding!</p></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Weekly Routine -->
+                <div class="dashboard-card weekly-card">
+                    <h3>Your Weekly &ldquo;Data Analyst&rdquo; Routine</h3>
+                    <p class="card-subtitle">Keeps you strong, lean &amp; energized while protecting your ₹8,000 monthly savings.</p>
+                    <div class="weekly-table-wrap">
+                        <table class="weekly-table">
+                            <thead><tr>
+                                <th>Day</th><th>🌅 Breakfast</th><th>🏢 Lunch</th><th>🌿 Munch</th><th>🌆 Evening</th><th>🌙 Dinner</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr><td class="day-cell wday-mon">Mon</td><td>Masala Oats + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + Chhaach</td><td>Creamy Oats + 1 Egg</td></tr>
+                                <tr><td class="day-cell wday-tue">Tue</td><td>Masala Oats + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + Peanuts</td><td>Masala Oats + 1 Egg</td></tr>
+                                <tr><td class="day-cell wday-wed">Wed</td><td>Poha + Peanuts + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + 🍊 Fruit</td><td>Veggie Oats + 1 Egg</td></tr>
+                                <tr><td class="day-cell wday-thu">Thu</td><td>Poha + Peanuts + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + Peanuts</td><td>Masala Oats + 1 Egg</td></tr>
+                                <tr><td class="day-cell wday-fri">Fri</td><td>Suji Upma + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + Chhaach</td><td>Sprouts Chaat + 1 Egg</td></tr>
+                                <tr><td class="day-cell wday-sat">Sat</td><td>Sprouts Chaat + 1 Egg</td><td class="lunch-col">Solid Meal</td><td class="munch-col">Makhana + Chana</td><td>Biscuits + 🍊 Fruit</td><td>Suji Upma + 1 Egg</td></tr>
+                                <tr class="sunday-row"><td class="day-cell wday-sun">Sun 🎉</td><td>Puri Cholay (Street!)</td><td class="lunch-col">Kettle Chana</td><td class="munch-col">Makhana + Chana</td><td>Golgappe 🎊</td><td>Plain Oats + Chhaach</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Munch + Health Grid -->
+                <div class="munch-health-grid">
+
+                    <div class="dashboard-card">
+                        <h3>🌿 The Munch Basket (3:30 PM)</h3>
+                        <p class="description">Your daily desk snacks that fight mid-afternoon brain fog during data analysis sprints.</p>
+                        <div class="munch-items-list">
+                            <div class="munch-item-card">
+                                <span class="munch-emoji">🌾</span>
+                                <div><strong>Makhana (Foxnuts)</strong><span>Low glycemic &middot; Slow energy release &middot; No crash</span></div>
+                            </div>
+                            <div class="munch-item-card">
+                                <span class="munch-emoji">🟤</span>
+                                <div><strong>Roasted Chana</strong><span>Cheapest protein &middot; Prevents muscle loss &middot; Fills you up</span></div>
+                            </div>
+                            <div class="munch-item-card munch-fruit">
+                                <span class="munch-emoji">🍊</span>
+                                <div><strong>Seasonal Fruit</strong><span>Natural sugars &middot; Vitamin C boosts iron absorption &middot; Anti-fatigue</span></div>
+                            </div>
+                            <div class="munch-item-card">
+                                <span class="munch-emoji">🍋</span>
+                                <div><strong>"Power Refresh" Drink</strong><span>Water + Half Lemon + Black Salt + Roasted Jeera. Sip between 3-4 PM.</span></div>
+                            </div>
+                        </div>
+                        <div class="mentor-tip">
+                            <i data-lucide="award"></i>
+                            <span><strong>Pro-Tip:</strong> Buy 1kg of roasted chana in bulk from a local Kirana. It costs ₹80&ndash;100/kg and saves more money for mom&rsquo;s scooty!</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Important Health Reminders</h3>
+                        <div class="health-reminders">
+                            <div class="health-item">
+                                <div class="health-icon"><i data-lucide="zap"></i></div>
+                                <div><strong>Protein Boost</strong><p>Roasted Chana in your Munch is one of the cheapest, best protein sources. Keeps you full and prevents muscle loss on a desk job.</p></div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon" style="background:rgba(245,158,11,0.1);color:var(--accent-amber)"><i data-lucide="sun"></i></div>
+                                <div><strong>Iron Absorption</strong><p>Always add lemon to oats and poha. As a woman, this prevents the fatigue that often hits with a new demanding office job.</p></div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon" style="background:rgba(99,102,241,0.1);color:#818cf8"><i data-lucide="heart-pulse"></i></div>
+                                <div><strong>Dairy Daily</strong><p>500ml of Verka milk or Chhaach every day keeps your bones strong while you save for the scooty.</p></div>
+                            </div>
+                            <div class="health-item" style="background:rgba(16,185,129,0.04);border-color:rgba(16,185,129,0.15);border-radius:10px;padding:10px">
+                                <div class="health-icon"><i data-lucide="indian-rupee"></i></div>
+                                <div><strong>Bank of Baroda RD Hack</strong><p>Save ₹8,000/month via bob World App at 6.85% p.a. → <strong>₹99,612 in 12 months</strong>. Exact on-road price for TVS Jupiter ZX Ludhiana!</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+            <!-- Tab Content 3: Nutrition -->
+            <!-- Tab Content 3: Routine Planner -->
+            <section id="nutrition" class="tab-content">
+                <div class="dashboard-card routine-card">
+                    <h3>Daily Routine & Reminders</h3>
+                    <p class="description">Set your specific times for Breakfast, Lunch, The Munch, and Dinner. The app will automatically remind you when it's time to eat!</p>
+                    
+                    <div class="meal-times-form" id="meal-times-form">
+                        <!-- Meal 1 -->
+                        <div class="meal-time-row">
+                            <div class="meal-info">
+                                <strong>🌅 Breakfast</strong>
+                                <p>Kettle Eggs + Soaked Oats/Poha</p>
+                            </div>
+                            <input type="time" id="time-breakfast" class="meal-time-input">
+                        </div>
+
+                        <!-- Meal 2 -->
+                        <div class="meal-time-row">
+                            <div class="meal-info">
+                                <strong>🏢 Lunch</strong>
+                                <p>Solid Meal / Bulked Suji Upma</p>
+                            </div>
+                            <input type="time" id="time-lunch" class="meal-time-input">
+                        </div>
+
+                        <!-- Meal 3 -->
+                        <div class="meal-time-row">
+                            <div class="meal-info">
+                                <strong>🌿 The Munch</strong>
+                                <p>Roasted Chana, Makhana, Power Refresh Drink</p>
+                            </div>
+                            <input type="time" id="time-munch" class="meal-time-input">
+                        </div>
+
+                        <!-- Meal 4 -->
+                        <div class="meal-time-row">
+                            <div class="meal-info">
+                                <strong>🌙 Dinner</strong>
+                                <p>Sprouts Chaat / Masala Oats</p>
+                            </div>
+                            <input type="time" id="time-dinner" class="meal-time-input">
+                        </div>
+
+                        <button class="btn btn-primary" id="save-meal-times-btn" style="width: 100%; margin-top: 1rem;">Save Meal Times</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Content 4: Ludhiana Guide -->
+            <section id="ludhiana" class="tab-content">
+                <div class="ludhiana-grid">
+                    <!-- Shopping & Vendor Advice -->
+                    <div class="dashboard-card info-card">
+                        <h3>Ludhiana Solo Shopping Strategy</h3>
+                        <div class="info-blocks">
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="store"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Fixed-Price Dairy at Verka Booths</h4>
+                                    <p>Ludhiana is in Punjab, and local private dairies (doodh walas) often charge variable rates or dilute milk. To stay strictly on budget, buy your fresh milk, curd, and butter exclusively from official <strong>Verka Booths</strong>. Prices are fixed, standard, and printed clearly on the packets.</p>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="shopping-cart"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Bulk Kirana for Grains</h4>
+                                    <p>Avoid buying small 500g branded packages of Oats, Suji, and Poha from supermarkets. Find a local neighborhood Kirana (mom-and-pop shop) and buy loose or unbranded bulk packages (1kg or 2kg). Loose Poha and Suji cost 30-40% less than branded packages.</p>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="percent"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Vegetable Sabzi Mandi Timing</h4>
+                                    <p>Ludhiana has several local vegetable markets (Rehri markets). If you buy veggies at 9:00 AM, vendors charge a premium. Go between 7:30 PM and 8:30 PM; vendors want to liquidate their remaining stock before closing and will sell cabbage, onions, and potatoes at deep discounts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto Rickshaw Commute Guide -->
+                    <div class="dashboard-card info-card">
+                        <h3>Local Commute & Auto Hacks</h3>
+                        <p class="description">
+                            Ludhiana traffic can be intense. As a data analyst commuting to Hero Steels or similar industrial hubs, optimizing your daily travel saves both money and mental energy.
+                        </p>
+
+                        <div class="info-blocks mt-3">
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="users"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Shared Autos (Vikrams)</h4>
+                                    <p>Do not hire private autos for daily commute. Look for large shared autos (often called 'Vikrams' locally) that run fixed routes. A 5km trip costs ₹15-₹20 instead of the ₹100+ a private auto will charge.</p>
+                                </div>
+                            </div>
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="map-pin"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Landmarks over Addresses</h4>
+                                    <p>When giving directions to rickshaw pullers, always use prominent local landmarks (hospitals, prominent chowks, famous sweet shops) rather than exact street numbers. E.g., "Near Aarti Chowk" instead of "Street 4".</p>
+                                </div>
+                            </div>
+                            <div class="info-block">
+                                <div class="icon-wrap"><i data-lucide="sun-snow"></i></div>
+                                <div class="text-wrap">
+                                    <h4>Weather Protection</h4>
+                                    <p>Ludhiana summers exceed 40°C. Always carry a cotton scarf (chunni) or umbrella during your shared auto commute to protect against the severe dust and direct heat on industrial routes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Tab Content 5: Daily Log & Savings Calendar -->
+            <section id="dailylog" class="tab-content">
+                <div class="dailylog-grid">
+
+                    <!-- Monthly Expense Calendar -->
+                    <div class="dashboard-card calendar-card">
+                        <div class="calendar-header">
+                            <button class="btn btn-secondary btn-sm" id="cal-prev-month">
+                                <i data-lucide="chevron-left"></i>
+                            </button>
+                            <div class="cal-title-group">
+                                <h3 id="cal-month-title">June 2026</h3>
+                                <span class="cal-subtitle" id="cal-month-spend-summary">Loading...</span>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" id="cal-next-month">
+                                <i data-lucide="chevron-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="calendar-weekdays">
+                            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- Days injected by JS -->
+                        </div>
+
+                        <div class="cal-legend">
+                            <div class="legend-item"><span class="dot dot-logged"></span> Expenses logged</div>
+                            <div class="legend-item"><span class="dot dot-empty"></span> No entries</div>
+                            <div class="legend-item"><span class="dot dot-today"></span> Today</div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Summary + Savings Calendar -->
+                    <div class="dailylog-right">
+
+                        <!-- Monthly Breakdown Card -->
+                        <div class="dashboard-card monthly-breakdown-card">
+                            <h3>This Month's Breakdown</h3>
+                            <div class="breakdown-bars" id="breakdown-bars">
+                                <!-- Injected by JS -->
+                            </div>
+                            <div class="breakdown-totals">
+                                <div class="breakdown-total-row">
+                                    <span>Total Spent</span>
+                                    <strong id="breakdown-total">₹0</strong>
+                                </div>
+                                <div class="breakdown-total-row">
+                                    <span>Daily Budget (₹6,000 / 30 days)</span>
+                                    <strong>₹200 / day</strong>
+                                </div>
+                                <div class="breakdown-total-row highlight-row">
+                                    <span>Remaining (variable budget)</span>
+                                    <strong id="breakdown-remaining" class="text-success">₹6,000</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 12-Month Savings Calendar -->
+                        <div class="dashboard-card savings-calendar-card">
+                            <div class="card-header-actions">
+                                <h3>12-Month Scooty Fund</h3>
+                                <span class="badge badge-success" id="savings-months-done">0 / 12</span>
+                            </div>
+                            <p class="description">Click a month tile to mark your ₹8,000 as saved for that month. Each confirmed month brings you closer to your mother's scooty!</p>
+                            <div class="savings-months-grid" id="savings-months-grid">
+                                <!-- 12 month tiles injected by JS -->
+                            </div>
+                            <div class="savings-total-display">
+                                <div class="savings-total-row">
+                                    <span>Confirmed Saved</span>
+                                    <strong class="text-success" id="savings-confirmed-total">₹0</strong>
+                                </div>
+                                <div class="savings-total-row">
+                                    <span>Projected with RD Interest (6.5%)</span>
+                                    <strong id="savings-projected-total">₹0</strong>
+                                </div>
+                                <div class="savings-total-row">
+                                    <span>Remaining to Goal (₹96,000)</span>
+                                    <strong id="savings-remaining-goal">₹96,000</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Day Entry Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-box" id="modal-box">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title" id="modal-date-title">Log Expenses</h3>
+                    <span class="modal-subtitle">Enter your spending for each category</span>
+                </div>
+                <button class="modal-close-btn" id="modal-close-btn"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-input-row">
+                    <div class="modal-cat-label">
+                        <i data-lucide="shopping-bag"></i>
+                        <span>Food & Groceries</span>
+                    </div>
+                    <div class="modal-input-wrap">
+                        <span class="rupee-prefix">₹</span>
+                        <input type="number" id="modal-food" min="0" placeholder="0" class="modal-input">
+                    </div>
+                </div>
+                <div class="modal-input-row">
+                    <div class="modal-cat-label">
+                        <i data-lucide="bus"></i>
+                        <span>Travel & Commute</span>
+                    </div>
+                    <div class="modal-input-wrap">
+                        <span class="rupee-prefix">₹</span>
+                        <input type="number" id="modal-travel" min="0" placeholder="0" class="modal-input">
+                    </div>
+                </div>
+                <div class="modal-input-row">
+                    <div class="modal-cat-label">
+                        <i data-lucide="smile"></i>
+                        <span>Misc / Treats</span>
+                    </div>
+                    <div class="modal-input-wrap">
+                        <span class="rupee-prefix">₹</span>
+                        <input type="number" id="modal-misc" min="0" placeholder="0" class="modal-input">
+                    </div>
+                </div>
+                <div class="modal-input-row">
+                    <div class="modal-cat-label">
+                        <i data-lucide="package"></i>
+                        <span>Other / One-time</span>
+                    </div>
+                    <div class="modal-input-wrap">
+                        <span class="rupee-prefix">₹</span>
+                        <input type="number" id="modal-other" min="0" placeholder="0" class="modal-input">
+                    </div>
+                </div>
+                <div class="modal-input-row">
+                    <div class="modal-cat-label">
+                        <i data-lucide="pencil-line"></i>
+                        <span>Note (optional)</span>
+                    </div>
+                    <input type="text" id="modal-note" placeholder="e.g. Verka milk + eggs" class="modal-input modal-note-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modal-clear-btn">Clear Day</button>
+                <button class="btn btn-primary" id="modal-save-btn">Save Entry</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reminder Toast Notification -->
+    <div id="reminder-toast" class="reminder-toast">
+        <div class="toast-icon"><i data-lucide="bell-ring"></i></div>
+        <div class="toast-content">
+            <h4 id="toast-title">Time to Eat!</h4>
+            <p id="toast-message">Eat Masala Oats + 1 Egg</p>
+        </div>
+        <button id="toast-close"><i data-lucide="x"></i></button>
+    </div>
+
+    <!-- Script file -->
+    <script src="app.js"></script>
+</body>
+</html>
