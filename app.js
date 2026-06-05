@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     initSidebarToggle();
     initTracker();
-    initCooking();
     initRoutine();
     initDailyLog();
     initSavingsCalendar();
@@ -185,28 +184,7 @@ function updateRingFromSavings() {
     document.getElementById('current-saved-val').textContent    = `₹${totalSaved.toLocaleString('en-IN')}`;
 }
 
-// ============================================================
-// TAB 2 — COOKING (VEGGIE BULKING CALC)
-// ============================================================
-function initCooking() {
-    ['veg-cabbage','veg-onion','veg-peanuts'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calcBulk);
-    });
-    calcBulk();
-}
-
-function calcBulk() {
-    const cab    = parseFloat(document.getElementById('veg-cabbage').value) || 0;
-    const onion  = parseFloat(document.getElementById('veg-onion').value)   || 0;
-    const peanut = parseFloat(document.getElementById('veg-peanuts').value) || 0;
-    document.getElementById('bulk-weight').textContent   = `${cab + onion + peanut}g`;
-    document.getElementById('bulk-calories').textContent = `${Math.round(cab*0.25 + onion*0.4 + peanut*5.67)} kcal`;
-    document.getElementById('bulk-protein').textContent  = `${(cab*0.013 + onion*0.011 + peanut*0.258).toFixed(1)}g`;
-    document.getElementById('bulk-cost').textContent     = `₹${(cab*0.05 + onion*0.06 + peanut*0.12).toFixed(2)}`;
-}
-
 // Removed Tab 3 Nutrition logic (protein planner) as requested.
-
 // Removed Tab 4 Egg Checker logic as requested.
 
 // ============================================================
