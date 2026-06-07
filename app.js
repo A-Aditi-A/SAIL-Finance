@@ -576,3 +576,222 @@ function initSidebarToggle() {
         setTimeout(() => lucide.createIcons(), 310);
     });
 }
+
+
+function renderAnalytics(){
+ if(typeof dailyLog==='undefined') return;
+
+ let food=0,travel=0,misc=0,other=0;
+
+ const body=document.getElementById('analytics-body');
+ if(body) body.innerHTML='';
+
+ Object.keys(dailyLog).sort().forEach(date=>{
+   const e=dailyLog[date]||{};
+   food += e.food||0;
+   travel += e.travel||0;
+   misc += e.misc||0;
+   other += e.other||0;
+
+   if(body){
+      const total=(e.food||0)+(e.travel||0)+(e.misc||0)+(e.other||0);
+      body.innerHTML += `<tr>
+      <td>${date}</td>
+      <td>₹${e.food||0}</td>
+      <td>₹${e.travel||0}</td>
+      <td>₹${e.misc||0}</td>
+      <td>₹${e.other||0}</td>
+      <td>₹${total}</td>
+      <td>${e.note||''}</td>
+      </tr>`;
+   }
+ });
+
+ const total=food+travel+misc+other;
+
+ const set=(id,val)=>{
+   const el=document.getElementById(id);
+   if(el) el.textContent='₹'+val.toLocaleString('en-IN');
+ };
+
+ set('analytics-total',total);
+ set('analytics-food',food);
+ set('analytics-travel',travel);
+ set('analytics-misc',misc);
+
+ const canvas=document.getElementById('analyticsCategoryChart');
+ if(canvas && typeof Chart!=='undefined'){
+   new Chart(canvas,{
+      type:'pie',
+      data:{
+        labels:['Food','Travel','Misc','Other'],
+        datasets:[{data:[food,travel,misc,other]}]
+      }
+   });
+ }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+ setTimeout(renderAnalytics,1000);
+});
+
+function renderAnalyticsV2(){
+ if(typeof dailyLog==='undefined') return;
+
+ const monthly={};
+ let food=0,travel=0,misc=0,other=0;
+
+ Object.keys(dailyLog).forEach(date=>{
+   const e=dailyLog[date]||{};
+   const month=date.slice(0,7);
+
+   if(!monthly[month]) monthly[month]={food:0,travel:0,misc:0,other:0};
+
+   monthly[month].food += e.food||0;
+   monthly[month].travel += e.travel||0;
+   monthly[month].misc += e.misc||0;
+   monthly[month].other += e.other||0;
+
+   food += e.food||0;
+   travel += e.travel||0;
+   misc += e.misc||0;
+   other += e.other||0;
+ });
+
+ const tbody=document.getElementById('monthly-summary-body');
+ if(tbody){
+   tbody.innerHTML='';
+   Object.keys(monthly).sort().forEach(m=>{
+      const x=monthly[m];
+      const t=x.food+x.travel+x.misc+x.other;
+      tbody.innerHTML += `<tr><td>${m}</td><td>₹${x.food}</td><td>₹${x.travel}</td><td>₹${x.misc}</td><td>₹${x.other}</td><td>₹${t}</td></tr>`;
+   });
+ }
+
+ const body=document.getElementById('analytics-body');
+ if(body){
+   body.innerHTML='';
+   Object.keys(dailyLog).sort().reverse().forEach(date=>{
+      const e=dailyLog[date]||{};
+      const total=(e.food||0)+(e.travel||0)+(e.misc||0)+(e.other||0);
+      body.innerHTML += `<tr><td>${date}</td><td>${e.food||0}</td><td>${e.travel||0}</td><td>${e.misc||0}</td><td>${e.other||0}</td><td>${total}</td><td>${e.note||''}</td></tr>`;
+   });
+ }
+
+ const total=food+travel+misc+other;
+ const cats={Food:food,Travel:travel,Misc:misc,Other:other};
+ const largest=Object.keys(cats).sort((a,b)=>cats[b]-cats[a])[0];
+
+ const set=(id,val)=>{const e=document.getElementById(id); if(e) e.textContent=val;}
+ set('analytics-total','₹'+total.toLocaleString('en-IN'));
+ set('analytics-largest',largest);
+ set('analytics-average','₹'+Math.round(total/Math.max(Object.keys(dailyLog).length,1)));
+ set('analytics-remaining','₹'+Math.max(0,6000-total));
+
+ if(document.getElementById('analyticsCategoryChart') && typeof Chart!=='undefined'){
+   new Chart(document.getElementById('analyticsCategoryChart'),{
+    type:'pie',
+    data:{labels:['Food','Travel','Misc','Other'],datasets:[{data:[food,travel,misc,other]}]}
+   });
+ }
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(renderAnalyticsV2,1200));
+
+
+/* Buffer support placeholder */
+// Buffer removed
+
+const MONTHLY_META_KEY='monthly_meta';
+let monthlyMeta=JSON.parse(localStorage.getItem(MONTHLY_META_KEY)||'{}');
+
+function initMonthlyMeta(){
+ const btn=document.getElementById('save-monthly-meta');
+ if(!btn) return;
+ const filter=document.getElementById('analytics-month-filter');
+ const month=(filter&&filter.value&&filter.value!='all')?filter.value:new Date().toISOString().slice(0,7);
+ const data=monthlyMeta[month]||{};
+ const inc=document.getElementById('monthly-extra-income');
+ const note=document.getElementById('monthly-note');
+ if(inc) inc.value=data.extraIncome||0;
+ if(note) note.value=data.note||'';
+ btn.onclick=function(){
+   const activeMonth=((document.getElementById('analytics-month-filter')?.value)||new Date().toISOString().slice(0,7));
+   monthlyMeta[activeMonth]={extraIncome:Number(inc.value||0),bonus:Number(inc.value||0),note:note.value||''};
+   localStorage.setItem(MONTHLY_META_KEY,JSON.stringify(monthlyMeta));
+   if(typeof renderFinanceAnalyticsV2==='function') renderFinanceAnalyticsV2();
+   if(typeof renderAnalyticsV2==='function') renderAnalyticsV2();
+   const bal=document.getElementById('finance-balance-display');
+   if(bal){
+      const salary=Number((window.appSettings && appSettings.salary) || 20320);
+      const expenses=0;
+      bal.textContent='Balance: ₹'+(salary+Number(inc.value||0)-expenses).toLocaleString('en-IN');
+   }
+   alert('Saved');
+ };
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(initMonthlyMeta,1500));
+
+
+/* Finance Dashboard Integration */
+function renderFinanceAnalyticsV2(){
+    try{
+        const salary = Number((window.appSettings && appSettings.salary) || 20320);
+
+        const month = (document.getElementById('analytics-month-filter')?.value || '').trim();
+
+        let expenses = 0;
+        if(typeof dailyLog !== 'undefined'){
+            Object.keys(dailyLog).forEach(date=>{
+                if(!month || month==='all' || date.startsWith(month)){
+                    const e = dailyLog[date] || {};
+                    expenses += (e.food||0)+(e.travel||0)+(e.misc||0)+(e.other||0);
+                }
+            });
+        }
+
+        let extraIncome = 0;
+        try{
+            const meta = JSON.parse(localStorage.getItem(MONTHLY_META_KEY) || '{}');
+            if(month && month !== 'all' && meta[month]){
+                extraIncome = Number(meta[month].extraIncome || 0);
+            }
+        }catch(e){}
+
+        const totalIncome = salary + extraIncome;
+        const balance = totalIncome - expenses;
+
+        const cards = document.querySelectorAll('.stat-card .value');
+        if(cards.length >= 4){
+            cards[0].textContent = '₹' + expenses.toLocaleString('en-IN');
+            cards[1].textContent = '₹' + totalIncome.toLocaleString('en-IN');
+            cards[3].textContent = '₹' + balance.toLocaleString('en-IN');
+        }
+
+        const bal = document.getElementById('finance-balance-display');
+        if(bal) bal.textContent = 'Balance: ₹' + balance.toLocaleString('en-IN');
+
+    }catch(err){console.log(err);}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+    setInterval(renderFinanceAnalyticsV2,1000);
+});
+
+
+// Added fixes: month filter population and buffer inclusion in analytics balance
+function populateAnalyticsMonthFilter(){
+ const filter=document.getElementById('analytics-month-filter');
+ if(!filter || typeof dailyLog==='undefined') return;
+ const months=[...new Set(Object.keys(dailyLog).map(d=>String(d).slice(0,7)))].sort().reverse();
+ filter.innerHTML='<option value="all">All Months</option>'+months.map(m=>`<option value="${m}">${m}</option>`).join('');
+ filter.onchange=function(){
+   if(typeof renderAnalyticsV2==='function') renderAnalyticsV2();
+   if(typeof renderFinanceAnalyticsV2==='function') renderFinanceAnalyticsV2();
+   initMonthlyMeta();
+ };
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+ setTimeout(populateAnalyticsMonthFilter,1200);
+});
+

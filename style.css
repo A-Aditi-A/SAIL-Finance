@@ -2242,3 +2242,9 @@ select:focus, input[type="number"]:focus {
         width: 100%;
     }
 }
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat-card{padding:15px;border-radius:12px;background:var(--card-bg)}
+.stat-card .value{font-size:1.5rem;font-weight:700}
+
+#analytics-search{border-radius:8px}

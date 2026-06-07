@@ -50,7 +50,11 @@
                     <i data-lucide="map-pin"></i>
                     <span>Ludhiana Survival Guide</span>
                 </button>
-            </nav>
+            
+<button class="nav-item" data-tab="analytics" data-label="Analytics">
+<i data-lucide="bar-chart-3"></i><span>Analytics</span>
+</button>
+</nav>
 
             <div class="sidebar-footer">
                 <div class="user-profile">
@@ -236,7 +240,18 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            
+<div class="dashboard-card" style="margin-top:20px;">
+<h3>Monthly Income & Notes</h3>
+<label>Extra Income</label>
+<input type="number" id="monthly-extra-income" placeholder="0">
+<label style="display:block;margin-top:10px;">Notes</label>
+<textarea id="monthly-note" rows="4" placeholder="Bonus, cashback, freelance income"></textarea>
+<button class="btn btn-primary" id="save-monthly-meta">Save</button>
+<div style="margin-top:10px;font-weight:600;">Balance: <span id="analytics-balance">₹0</span></div>
+</div>
+
+</section>
 
             <!-- Tab Content 2: Cooking Hacks -->
             <section id="cooking" class="tab-content">
@@ -583,7 +598,49 @@
                 </div>
             </section>
 
-        </main>
+        
+<section id="analytics" class="tab-content">
+<div class="dashboard-card">
+<h3>Analytics Dashboard</h3>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="title">This Month</div><div class="value" id="analytics-total">₹0</div></div>
+<div class="stat-card"><div class="title">Remaining Budget</div><div class="value" id="analytics-remaining">₹0</div></div>
+<div class="stat-card"><div class="title">Largest Category</div><div class="value" id="analytics-largest">-</div></div>
+<div class="stat-card"><div class="title">Daily Average</div><div class="value" id="analytics-average">₹0</div></div>
+</div>
+
+<h3>Month Wise Report</h3>
+<select id="analytics-month-filter">
+<option value="all">All Months</option>
+</select>
+
+<div style="overflow:auto;margin-top:12px;">
+<table class="budget-table">
+<thead>
+<tr><th>Month</th><th>Food</th><th>Travel</th><th>Misc</th><th>Other</th><th>Total</th></tr>
+</thead>
+<tbody id="monthly-summary-body"></tbody>
+</table>
+</div>
+
+<div class="chart-container"><canvas id="analyticsCategoryChart"></canvas></div>
+
+<h3>Transactions</h3>
+<input id="analytics-search" placeholder="Search notes..." style="width:100%;padding:10px;margin-bottom:10px;">
+
+<div style="overflow:auto;">
+<table class="budget-table">
+<thead>
+<tr><th>Date</th><th>Food</th><th>Travel</th><th>Misc</th><th>Other</th><th>Total</th><th>Note</th></tr>
+</thead>
+<tbody id="analytics-body"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+</main>
     </div>
 
     <!-- Day Entry Modal -->
